@@ -71,6 +71,26 @@
             super.onDestroy();
         }
     
+内部封装了滚动监听
+    
+     this.wv.addOnScrollChangedListener(new EWebView.OnScrollChangedListener() {
+         // 当滚动到顶部时
+         @Override
+         public void onPageTop(int l, int t, int oldl, int oldt) {
+             
+         }
+         // 当滚动到底部
+         @Override
+         public void onPageEnd(int l, int t, int oldl, int oldt) {
+    
+         }
+         // 当在滚动时
+         @Override
+         public void onScrollChanged(int l, int t, int oldl, int oldt) {
+    
+         }
+     });
+
 内部已经封装了WebSettings的处理
 
 1. 支持获取手势焦点，输入用户名、密码或其他

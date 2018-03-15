@@ -46,11 +46,35 @@ public class EWebView extends WebView {
 
     public void init() {
         mWebLifeCycle = new DefaultWebLifeCycleImpl(this);
+
         initSettings();
         initClient();
 
     }
 
+    @Override
+    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+
+        float webContent = getContentHeight() * getScale();
+        float webNow = getHeight() + getScrollY();
+        if (Math.abs(webContent - webNow ) < 1){
+            //在底部
+            if (mOnScrollChangedListener != null) {
+                mOnScrollChangedListener.onPageEnd(l,t,oldl,oldt);
+            }
+        }else if(getScrollY() == 0){
+            //在顶部
+            if (mOnScrollChangedListener != null) {
+                mOnScrollChangedListener.onPageTop(l,t,oldl,oldt);
+            }
+        }else {
+            //在滚动或者中间
+            if (mOnScrollChangedListener != null) {
+                mOnScrollChangedListener.onScrollChanged(l,t,oldl,oldt);
+            }
+        }
+    }
 
     public WebLifeCycle getWebLifeCycle() {
         if (mWebLifeCycle == null) {
@@ -149,5 +173,17 @@ public class EWebView extends WebView {
 
     public void setFileChooserListener(fileChooserListener fileChooserListener) {
         mFileChooserListener = fileChooserListener;
+    }
+
+    private OnScrollChangedListener mOnScrollChangedListener;
+
+    public void addOnScrollChangedListener(OnScrollChangedListener onScrollChangedListener) {
+        mOnScrollChangedListener = onScrollChangedListener;
+    }
+
+    public interface OnScrollChangedListener{
+        void onPageTop(int l, int t, int oldl, int oldt);
+        void onPageEnd(int l, int t, int oldl, int oldt);
+        void onScrollChanged(int l, int t, int oldl, int oldt);
     }
 }

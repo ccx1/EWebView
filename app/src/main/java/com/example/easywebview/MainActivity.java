@@ -34,6 +34,23 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        this.wv.addOnScrollChangedListener(new EWebView.OnScrollChangedListener() {
+            @Override
+            public void onPageTop(int l, int t, int oldl, int oldt) {
+
+            }
+
+            @Override
+            public void onPageEnd(int l, int t, int oldl, int oldt) {
+
+            }
+
+            @Override
+            public void onScrollChanged(int l, int t, int oldl, int oldt) {
+
+            }
+        });
+
     }
 
 
