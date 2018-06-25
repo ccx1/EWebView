@@ -136,7 +136,14 @@ public class EWebView extends WebView {
                 }
             }
         });
-        setWebViewClient(new EWebViewClient(getContext().getApplicationContext()));
+        EWebViewClient eWebViewClient = new EWebViewClient(getContext().getApplicationContext());
+        eWebViewClient.addJavaScriptMethodAndCallBack("postStr()", new ValueCallback<String>() {
+            @Override
+            public void onReceiveValue(String value) {
+
+            }
+        });
+        setWebViewClient(eWebViewClient);
     }
 
 

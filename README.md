@@ -3,6 +3,31 @@
 主要是发现Android的webview产生的坑太多了,client需要自己进行封装.这里继续进行了一系列的封装,并且参考了一个比较好的博客.
 
 
+2018.6.25新增
+方法，页面加载完成和页面开始加载方法，以及一个调用js的方法，可以不断的add进行添加
+页面加载和开始加载，统一在EWebViewClient中
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+           // 页面加载完成
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            // 页面开始加载
+        }
+
+调用js的方法,这个callback使用范型定义
+
+        EWebViewClient eWebViewClient = new EWebViewClient(getContext().getApplicationContext());
+        eWebViewClient.addJavaScriptMethodAndCallBack("postStr()", new ValueCallback<String>() {
+            @Override
+            public void onReceiveValue(String value) {
+
+            }
+        });
+        setWebViewClient(eWebViewClient);
+
 主要是WebChromeClient 内部有些坑吧,其中5.0以下的系统版本调用的是 openFileChooser  
 
         // 3.0以下调用

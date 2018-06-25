@@ -4,11 +4,18 @@ import android.content.ActivityNotFoundException;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.view.View;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by v_chicunxiang on 2018/3/8.
@@ -22,6 +29,8 @@ public class EWebViewClient extends WebViewClient {
 
     private Context context;
 
+    private Map<String,ValueCallback> JsTask;
+
     public EWebViewClient() {
         super();
     }
@@ -30,6 +39,31 @@ public class EWebViewClient extends WebViewClient {
         super();
         this.context = context;
     }
+
+    @Override
+    public void onPageFinished(WebView view, String url) {
+        // 页面加载完成
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+          /*  // 调用js
+            view.evaluateJavascript("javascript:postStr()", new ValueCallback<String>() {
+                @Override
+                public void onReceiveValue(String value) {
+                    //此处为 js 返回的结果
+                }
+            });*/
+            for (Map.Entry<String, ValueCallback> stringValueCallbackEntry : JsTask.entrySet()) {
+                // 调用js
+                view.evaluateJavascript(stringValueCallbackEntry.getKey(), stringValueCallbackEntry.getValue());
+            }
+
+        }
+    }
+
+    @Override
+    public void onPageStarted(WebView view, String url, Bitmap favicon) {
+        // 页面开始加载
+    }
+
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -158,4 +192,12 @@ public class EWebViewClient extends WebViewClient {
 
     }
 
+    public <T> void addJavaScriptMethodAndCallBack(String methodName, ValueCallback<T> valueCallback) {
+        if (JsTask == null) {
+            JsTask = new HashMap<>();
+        }
+
+        JsTask.put(methodName,valueCallback);
+
+    }
 }
