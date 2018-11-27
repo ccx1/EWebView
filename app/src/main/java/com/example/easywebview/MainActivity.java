@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.wv = (EWebView) findViewById(R.id.wv);
-        wv.loadUrl("https://www.baidu.com");
+        wv.loadUrl("http://api.schmfz.com/iot/readDataAnalysisCurve_toHtml?waterPumpGroupIds=63933851441152&startTime=2018-11-27%2000:00:00&endTime=2018-11-27%2023:59:59&monitorParam=3&userId=63932804550658&companyCode=435079");
         wv.setFileChooserListener(new EWebView.fileChooserListener() {
             @Override
             public void fileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
