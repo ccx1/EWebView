@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.wv = (EWebView) findViewById(R.id.wv);
-        wv.loadUrl("https://www.baidu.com");
+        wv.loadUrl("https://www.baidu.com/");
         wv.setFileChooserListener(new EWebView.fileChooserListener() {
             @Override
             public void fileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {

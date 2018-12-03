@@ -106,9 +106,9 @@ public class EWebView extends WebView {
         //webSettings.setSupportZoom(true);  //支持缩放，默认为true。是下面那个的前提。
         //webSettings.setBuiltInZoomControls(true); //设置内置的缩放控件。
         //若上面是false，则该WebView不可缩放，这个不管设置什么都不能缩放。
-        mWebSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+//        mWebSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         mWebSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
-        mWebSettings.setDomStorageEnabled(true);
+//        mWebSettings.setDomStorageEnabled(true);
         mWebSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN); //支持内容重新布局
         mWebSettings.supportMultipleWindows();  //多窗口
         mWebSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);  //关闭webview中缓存
