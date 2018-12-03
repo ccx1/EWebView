@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.view.View;
 import android.webkit.ValueCallback;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -29,7 +30,7 @@ public class EWebViewClient extends WebViewClient {
 
     private Context context;
 
-    private Map<String,ValueCallback> JsTask;
+    private Map<String, ValueCallback> JsTask;
 
     public EWebViewClient() {
         super();
@@ -55,8 +56,8 @@ public class EWebViewClient extends WebViewClient {
                 // 调用js
                 view.evaluateJavascript(stringValueCallbackEntry.getKey(), stringValueCallbackEntry.getValue());
             }
-
         }
+//        System.out.println("加载完成");
     }
 
     @Override
@@ -67,8 +68,10 @@ public class EWebViewClient extends WebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        if (url == null)
+        if (url == null) {
             return false;
+        }
+
 
         try {
 
@@ -87,7 +90,7 @@ public class EWebViewClient extends WebViewClient {
                     context.startActivity(data);
                 } catch (Exception e) {
                     if (e instanceof ActivityNotFoundException) {
-                        Toast.makeText(context,"手机中没有安装邮件app",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "手机中没有安装邮件app", Toast.LENGTH_SHORT).show();
                     }
                 }
                 return true;
@@ -162,7 +165,7 @@ public class EWebViewClient extends WebViewClient {
                 ClipboardManager cmb = (ClipboardManager) context
                         .getSystemService(Context.CLIPBOARD_SERVICE);
                 cmb.setText(substring);
-                Toast.makeText(context,"已复制到剪贴板",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "已复制到剪贴板", Toast.LENGTH_LONG).show();
 
                 return true;
             } else if (url.startsWith("store://")) {
@@ -197,7 +200,7 @@ public class EWebViewClient extends WebViewClient {
             JsTask = new HashMap<>();
         }
 
-        JsTask.put(methodName,valueCallback);
+        JsTask.put(methodName, valueCallback);
 
     }
 }

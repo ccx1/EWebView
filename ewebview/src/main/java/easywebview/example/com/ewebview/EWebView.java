@@ -1,5 +1,6 @@
 package easywebview.example.com.ewebview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
@@ -9,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -24,14 +26,14 @@ import android.webkit.WebView;
 public class EWebView extends WebView {
 
     private WebLifeCycle mWebLifeCycle;
-    private WebSettings mWebSettings;
+    private WebSettings  mWebSettings;
 
     public EWebView(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public EWebView(Context context, AttributeSet attrs) {
-        this(context, attrs,0);
+        this(context, attrs, 0);
     }
 
     public EWebView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -57,23 +59,29 @@ public class EWebView extends WebView {
         super.onScrollChanged(l, t, oldl, oldt);
 
         float webContent = getContentHeight() * getScale();
-        float webNow = getHeight() + getScrollY();
-        if (Math.abs(webContent - webNow ) < 1){
+        float webNow     = getHeight() + getScrollY();
+        if (Math.abs(webContent - webNow) < 1) {
             //在底部
             if (mOnScrollChangedListener != null) {
-                mOnScrollChangedListener.onPageEnd(l,t,oldl,oldt);
+                mOnScrollChangedListener.onPageEnd(l, t, oldl, oldt);
             }
-        }else if(getScrollY() == 0){
+        } else if (getScrollY() == 0) {
             //在顶部
             if (mOnScrollChangedListener != null) {
-                mOnScrollChangedListener.onPageTop(l,t,oldl,oldt);
+                mOnScrollChangedListener.onPageTop(l, t, oldl, oldt);
             }
-        }else {
+        } else {
             //在滚动或者中间
             if (mOnScrollChangedListener != null) {
-                mOnScrollChangedListener.onScrollChanged(l,t,oldl,oldt);
+                mOnScrollChangedListener.onScrollChanged(l, t, oldl, oldt);
             }
         }
+    }
+
+    @Override
+    public void loadUrl(String url) {
+
+        super.loadUrl(url);
     }
 
     public WebLifeCycle getWebLifeCycle() {
@@ -98,9 +106,9 @@ public class EWebView extends WebView {
         //webSettings.setSupportZoom(true);  //支持缩放，默认为true。是下面那个的前提。
         //webSettings.setBuiltInZoomControls(true); //设置内置的缩放控件。
         //若上面是false，则该WebView不可缩放，这个不管设置什么都不能缩放。
-
+        mWebSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         mWebSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
-
+        mWebSettings.setDomStorageEnabled(true);
         mWebSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN); //支持内容重新布局
         mWebSettings.supportMultipleWindows();  //多窗口
         mWebSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);  //关闭webview中缓存
@@ -112,12 +120,13 @@ public class EWebView extends WebView {
     }
 
 
+
     public WebSettings getWebSettings() {
         return mWebSettings;
     }
 
     private void initClient() {
-        setWebChromeClient(new EWebChromeClient(getContext().getApplicationContext()){
+        setWebChromeClient(new EWebChromeClient(getContext().getApplicationContext()) {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
@@ -149,7 +158,8 @@ public class EWebView extends WebView {
 
     /**
      * 将cookie同步到WebView
-     * @param url WebView要加载的url
+     *
+     * @param url    WebView要加载的url
      * @param cookie 要同步的cookie
      * @return true 同步cookie成功，false同步cookie失败
      */
@@ -163,7 +173,7 @@ public class EWebView extends WebView {
         return !TextUtils.isEmpty(newCookie);
     }
 
-    public interface fileChooserListener{
+    public interface fileChooserListener {
         /**
          * 5.0 以上调用
          */
@@ -188,9 +198,11 @@ public class EWebView extends WebView {
         mOnScrollChangedListener = onScrollChangedListener;
     }
 
-    public interface OnScrollChangedListener{
+    public interface OnScrollChangedListener {
         void onPageTop(int l, int t, int oldl, int oldt);
+
         void onPageEnd(int l, int t, int oldl, int oldt);
+
         void onScrollChanged(int l, int t, int oldl, int oldt);
     }
 }

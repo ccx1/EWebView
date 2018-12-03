@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.wv = (EWebView) findViewById(R.id.wv);
-        wv.loadUrl("http://www.baidu.com");
+        wv.loadUrl("https://www.baidu.com");
         wv.setFileChooserListener(new EWebView.fileChooserListener() {
             @Override
             public void fileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
@@ -71,4 +72,6 @@ public class MainActivity extends AppCompatActivity {
         wv.getWebLifeCycle().onDestroy();
         super.onDestroy();
     }
+
+
 }
